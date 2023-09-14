@@ -1,68 +1,96 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Collections;
 
 namespace ConsoleApp1
 {
     class Program
     {
-        public static void Main(string[] args)
+        static int MyDel(int x, int y)
         {
-            Employee employee = new Employee("Tom", "Microsoft"); // Создание объекта Employee
-            Person person = employee;   // преобразование от Employee к Person
-            Person bob = new Client("Bob", "ContosoBank");// Создание объекта Person с преобразованием в Client
-            Console.WriteLine(((Client)bob).Bank); // дополнительное преобразование от Person к Client для вызова переменной Bank
-
-
-
-            object obj = new Employee("Bill", "Microsoft");
-            // ((Person)obj).Print();
-            string company = ((Employee)obj).Company;
-            // Console.WriteLine(company);
-
-
-
-            // Console.WriteLine(person.Name);
-            // Console.WriteLine(bob);
+            if (y == 0)
+            {
+                Exception exc = new Exception();
+                exc.HelpLink = "https://www.ithub.bulgakov.app";
+                exc.Data.Add("Время возникновения: ", DateTime.Now);
+                exc.Data.Add("Причина: ", "Некорректное значение");
+        
+                throw exc;
+            }
+            return x / y;
         }
-    }
-    class Person
-    {
-        public string Name { get; set; }
-        public int age { get; set; }
-        public Person(string name) // Конструктор Person
-        {
-            Name = name;
-        }
-        public Person(string name, int age) // Перегрузка конструктора Person
-        {
-            Name = name;
-            this.age = age;
-        }
-        public void Print()
-        {
-            Console.WriteLine($"Person {Name}");
-        }
-    }
 
-    class Employee : Person // Наследование от класса Person
-    {
-        public string Company { get; set; }
-        public Employee(string name, string company) : base(name) // Наследование конструктора
+        static void Green()
         {
-            Company = company;
-        }
-        public Employee(string name, string company, int age) : base(name, age) // Наследование перегруженного конструктора
-        {
-            Company = company;
+            Console.ForegroundColor = ConsoleColor.Green;
         }
         
-    }
-
-    class Client : Person // Наследование от класса Person
-    {
-        public string Bank { get; set; }
-        public Client(string name, string bank) : base(name) // Наследование конструктора
+        
+        static void Gray()
         {
-            Bank = bank;
+            Console.ForegroundColor = ConsoleColor.Gray;
+        }
+        
+        static void Red()
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+        }
+
+        static void Main()
+        {
+            try
+            {
+                Console.Write("Введите x: ");
+                int x = int.Parse(Console.ReadLine());
+                Console.Write("Введите y: ");
+                int y = int.Parse(Console.ReadLine());
+
+                int result = MyDel(x, y);
+                Console.WriteLine("Результат: " + result);
+            }
+            catch (Exception ex)
+            {
+                Red();
+                Console.WriteLine("\n Error! \n");
+                Green();
+                Console.Write("Ошибка: ");
+                Gray();
+                Console.Write(ex.Message + "\n\n");
+                Green();
+                Console.Write("Метод: ");
+                Gray();
+                Console.Write(ex.TargetSite + "\n\n");
+                Green();
+                Console.Write("Вывод стека");
+                Gray();
+                Console.Write(ex.StackTrace + "\n\n");
+                Green();
+                Console.Write("Подробности на сайте: ");
+                Gray();
+                Console.Write(ex.HelpLink + "\n\n");
+                Green();
+                if (ex.Data != null)
+                {
+                    Console.WriteLine("Свведения: \n");
+                    Gray();
+                    foreach (DictionaryEntry d in ex.Data)
+                        Console.WriteLine("-> {0} {1}", d.Key, d.Value);
+                    Console.WriteLine("\n\n");
+                }
+                Gray();
+                Main();
+            }
+            Console.ReadLine();
+
+            }
+
         }
     }
-}
+
+
+
+
+
+
